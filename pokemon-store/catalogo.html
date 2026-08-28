@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo completo — Leviatán House</title>
+  <link rel="icon" href="Images/LeviaLogoEstandar-Photoroom.png" type="image/png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar">
+    <a href="index.html#inicio" class="navbar__brand">
+      <span class="navbar__mark">◆</span>
+      <img src="Images/LeviaLogoEstandar-Photoroom.png" alt="Leviatan House Logo" width="75" height="75" />
+      <span class="navbar__name">LEVIATAN HOUSE</span>
+    </a>
+    <nav class="navbar__links">
+      <a href="index.html#inicio">Inicio</a>
+      <a href="catalogo.html" class="active">Catálogo</a>
+      <a href="torneos.html">Torneos</a>
+      <a href="index.html#nosotros">Sobre nosotros</a>
+      <a href="index.html#contacto">Contacto</a>
+    </nav>
+    <a href="login.html" id="navAuthLink" class="navbar__auth">Iniciar sesión</a>
+    <button class="navbar__cart" id="cartToggle" aria-label="Abrir carrito">
+      🛒 <span class="navbar__cart-count" id="cartCount">0</span>
+    </button>
+    <button class="navbar__toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </header>
+
+  <!-- ===== ENCABEZADO DE PÁGINA ===== -->
+  <section class="page-header">
+    <p class="section__eyebrow">Catálogo completo</p>
+    <h1 class="section__title">Todo lo que tenemos</h1>
+  </section>
+
+  <!-- ===== TABS ===== -->
+  <div class="catalog-tabs">
+    <button class="tab-btn active" data-tab="singles">Singles</button>
+    <button class="tab-btn" data-tab="productos">Productos</button>
+  </div>
+
+  <!-- ===== TAB: SINGLES ===== -->
+  <section class="section tab-panel" id="tab-singles">
+    <div class="catalog-filters" id="singlesFilters">
+      <button class="filter-btn active" data-game="todos">Todos</button>
+      <button class="filter-btn" data-game="pokemon">Pokémon</button>
+      <button class="filter-btn" data-game="onepiece">One Piece</button>
+      <button class="filter-btn" data-game="riftbound">Riftbound</button>
+    </div>
+    <div class="catalog-grid" id="singlesGrid"></div>
+  </section>
+
+  <!-- ===== TAB: PRODUCTOS ===== -->
+  <section class="section tab-panel" id="tab-productos" hidden>
+    <div class="catalog-filters" id="productosFilters">
+      <button class="filter-btn active" data-game="todos">Todos</button>
+      <button class="filter-btn" data-game="pokemon">Pokémon</button>
+      <button class="filter-btn" data-game="onepiece">One Piece</button>
+      <button class="filter-btn" data-game="riftbound">Riftbound</button>
+    </div>
+    <div class="catalog-grid" id="productosGrid"></div>
+  </section>
+
+  <!-- ===== CARRITO (panel lateral) ===== -->
+  <aside class="cart-panel" id="cartPanel">
+    <div class="cart-panel__header">
+      <h3>Tu carrito</h3>
+      <button id="cartClose" aria-label="Cerrar carrito">✕</button>
+    </div>
+    <div class="cart-panel__items" id="cartItems">
+      <p class="placeholder">Tu carrito está vacío.</p>
+    </div>
+    <div class="cart-panel__footer">
+      <div class="cart-panel__total">Total: <span id="cartTotal">$0</span></div>
+      <button class="btn btn--primary btn--full" id="checkoutBtn">Finalizar compra</button>
+    </div>
+  </aside>
+  <div class="cart-overlay" id="cartOverlay"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <p>© 2026 Leviatán House. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="https://checkout.epayco.co/checkout-v2.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="data.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="auth.js"></script>
+  <script src="wishlist.js"></script>
+  <script src="cart.js"></script>
+  <script src="checkout-flow.js"></script>
+  <script src="catalogo.js"></script>
+</body>
+</html>

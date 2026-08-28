@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar sesión — Leviatán House</title>
+  <link rel="icon" href="Images/LeviaLogoEstandar-Photoroom.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="navbar">
+    <a href="index.html" class="navbar__brand" style="text-decoration:none;">
+      <span class="navbar__mark">◆</span>
+      <img src="Images/LeviaLogoEstandar-Photoroom.png" alt="Leviatan House Logo" width="75" height="75" />
+      <span class="navbar__name">LEVIATAN HOUSE</span>
+    </a>
+  </header>
+
+  <section class="auth-page">
+    <div class="auth-box">
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Iniciar sesión</button>
+        <button class="auth-tab" data-tab="signup">Crear cuenta</button>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <label>Correo electrónico
+          <input type="email" name="email" required />
+        </label>
+        <label>Contraseña
+          <div class="password-field">
+            <input type="password" name="password" required />
+            <button type="button" class="password-toggle" aria-label="Mostrar contraseña">👁</button>
+          </div>
+        </label>
+        <p class="auth-error" id="loginError" hidden></p>
+        <button type="submit" class="btn btn--primary btn--full">Entrar</button>
+      </form>
+
+      <form id="signupForm" class="auth-form" hidden>
+        <label>Nombre completo
+          <input type="text" name="fullName" required />
+        </label>
+        <label>Correo electrónico
+          <input type="email" name="email" required />
+        </label>
+        <label>Contraseña
+          <div class="password-field">
+            <input type="password" name="password" minlength="6" required />
+            <button type="button" class="password-toggle" aria-label="Mostrar contraseña">👁</button>
+          </div>
+        </label>
+        <p class="auth-error" id="signupError" hidden></p>
+        <p class="auth-success" id="signupSuccess" hidden></p>
+        <button type="submit" class="btn btn--primary btn--full">Crear cuenta</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2026 Leviatán House. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="data.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    const authTabs = document.querySelectorAll('.auth-tab');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+
+    document.querySelectorAll('.password-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = btn.previousElementSibling;
+        const showing = input.type === 'text';
+        input.type = showing ? 'password' : 'text';
+        btn.textContent = showing ? '👁' : '🙈';
+      });
+    });
+
+    authTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        authTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        loginForm.hidden = tab.dataset.tab !== 'login';
+        signupForm.hidden = tab.dataset.tab !== 'signup';
+      });
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errorEl = document.getElementById('loginError');
+      errorEl.hidden = true;
+
+      const formData = new FormData(e.target);
+      const { error } = await signIn(formData.get('email'), formData.get('password'));
+
+      if (error) {
+        errorEl.textContent = error.message.includes('Email not confirmed')
+          ? 'Debes confirmar tu correo antes de entrar. Revisa tu bandeja de entrada.'
+          : 'Correo o contraseña incorrectos.';
+        errorEl.hidden = false;
+        return;
+      }
+      window.location.href = 'cuenta.html';
+    });
+
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errorEl = document.getElementById('signupError');
+      const successEl = document.getElementById('signupSuccess');
+      errorEl.hidden = true;
+      successEl.hidden = true;
+
+      const formData = new FormData(e.target);
+      const { error } = await signUp(
+        formData.get('email'),
+        formData.get('password'),
+        formData.get('fullName')
+      );
+
+      if (error) {
+        errorEl.textContent = error.message.includes('already registered')
+          ? 'Ese correo ya tiene una cuenta.'
+          : 'No se pudo crear la cuenta. Intenta de nuevo.';
+        errorEl.hidden = false;
+        return;
+      }
+
+      successEl.textContent = '¡Cuenta creada! Revisa tu correo y confirma tu cuenta antes de iniciar sesión.';
+      successEl.hidden = false;
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>

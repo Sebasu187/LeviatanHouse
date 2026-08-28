@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi cuenta — Leviatán House</title>
+  <link rel="icon" href="Images/LeviaLogoEstandar-Photoroom.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="navbar">
+    <a href="index.html#inicio" class="navbar__brand">
+      <span class="navbar__mark">◆</span>
+      <img src="Images/LeviaLogoEstandar-Photoroom.png" alt="Leviatan House Logo" width="75" height="75" />
+      <span class="navbar__name">LEVIATAN HOUSE</span>
+    </a>
+    <nav class="navbar__links">
+      <a href="index.html#inicio">Inicio</a>
+      <a href="catalogo.html">Catálogo</a>
+      <a href="torneos.html">Torneos</a>
+      <a href="index.html#nosotros">Sobre nosotros</a>
+      <a href="index.html#contacto">Contacto</a>
+    </nav>
+    <a href="login.html" id="navAuthLink" class="navbar__auth navbar__auth--logged">Mi cuenta</a>
+    <button class="navbar__cart" id="cartToggle" aria-label="Abrir carrito">
+      🛒 <span class="navbar__cart-count" id="cartCount">0</span>
+    </button>
+    <button class="navbar__toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </header>
+
+  <section class="account-page">
+    <div class="account-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="account-sidebar">
+        <div class="account-sidebar__user">
+          <div class="account-sidebar__avatar">🐉</div>
+          <div>
+            <p class="account-sidebar__hi">Bienvenido,</p>
+            <p class="account-sidebar__name" id="sidebarName">—</p>
+          </div>
+        </div>
+
+        <nav class="account-nav">
+          <button class="account-nav__item active" data-tab="perfil">
+            <span>👤</span> Perfil
+          </button>
+          <button class="account-nav__item" data-tab="creditos">
+            <span>💳</span> Créditos
+          </button>
+          <button class="account-nav__item" data-tab="direcciones">
+            <span>📍</span> Direcciones
+          </button>
+          <button class="account-nav__item" data-tab="wishlist" id="wishlistLink">
+            <span>♥</span> Lista de deseos
+          </button>
+          <a href="pedidos.html" class="account-nav__item account-nav__item--link">
+            <span>📦</span> Mis pedidos
+          </a>
+          <button class="account-nav__item" data-tab="seguridad">
+            <span>🔒</span> Seguridad
+          </button>
+        </nav>
+      </aside>
+
+      <!-- CONTENIDO -->
+      <div class="account-content">
+
+        <!-- PERFIL -->
+        <div id="tabPerfil" class="account-panel">
+          <h2 class="account-content__title">Tu perfil</h2>
+          <div class="account-card">
+            <div class="account-field">
+              <span class="account-field__label">Email</span>
+              <span class="account-field__value" id="profileEmail">—</span>
+              <span class="account-field__hint">El email no se puede cambiar</span>
+            </div>
+            <form id="profileForm">
+              <label class="account-form-label">Nombres y apellidos
+                <input type="text" id="profileFullName" name="fullName" />
+              </label>
+              <p class="account-field__hint">Escribe tu nombre de pila y tus apellidos; lo usamos para identificar pedidos y envíos.</p>
+              <button type="submit" class="btn btn--primary">Guardar cambios</button>
+              <span class="account-save-msg" id="profileSaveMsg" hidden>Guardado ✓</span>
+            </form>
+          </div>
+        </div>
+
+        <!-- CRÉDITOS -->
+        <div id="tabCreditos" class="account-panel" hidden>
+          <h2 class="account-content__title">Tu saldo</h2>
+          <div class="account-card">
+            <span class="account-field__label">Leviacrédito</span>
+            <p class="account-field__hint">Saldo a favor para tu próxima compra. Se descuenta del total al pagar.</p>
+            <div class="account-credit-amount" id="creditAmount">$0 COP</div>
+            <p class="account-field__hint" id="creditEmptyMsg">Aún no hay movimientos.</p>
+          </div>
+        </div>
+
+        <!-- DIRECCIONES -->
+        <div id="tabDirecciones" class="account-panel" hidden>
+          <h2 class="account-content__title">Direcciones guardadas</h2>
+          <div class="account-card">
+            <p class="account-field__hint">Las direcciones que guardes aquí las vas a poder elegir rápido al pagar.</p>
+            <div id="addressList" class="address-list"></div>
+
+            <form id="addressForm" class="address-form">
+              <input type="text" name="label" placeholder="Etiqueta (ej. Casa, Trabajo)" required />
+              <input type="text" name="fullName" placeholder="Nombre completo" required />
+              <input type="text" name="cc" placeholder="Cédula" required />
+              <input type="tel" name="phone" placeholder="Celular de contacto" required />
+              <input type="text" name="city" placeholder="Ciudad" required />
+              <input type="text" name="address" placeholder="Dirección" required />
+              <button type="submit" class="btn btn--ghost">+ Agregar dirección</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- LISTA DE DESEOS -->
+        <div id="tabWishlist" class="account-panel" hidden>
+          <h2 class="account-content__title">Lista de deseos</h2>
+          <div class="account-card">
+            <div id="wishlistGrid" class="catalog-grid"></div>
+          </div>
+        </div>
+
+        <!-- SEGURIDAD -->
+        <div id="tabSeguridad" class="account-panel" hidden>
+          <h2 class="account-content__title">Seguridad</h2>
+          <div class="account-card">
+            <span class="account-field__label">Cambiar contraseña</span>
+            <form id="passwordForm">
+              <label class="account-form-label">Nueva contraseña
+                <div class="password-field">
+                  <input type="password" name="newPassword" minlength="6" required />
+                  <button type="button" class="password-toggle" aria-label="Mostrar contraseña">👁</button>
+                </div>
+              </label>
+              <label class="account-form-label">Confirmar nueva contraseña
+                <div class="password-field">
+                  <input type="password" name="confirmPassword" minlength="6" required />
+                  <button type="button" class="password-toggle" aria-label="Mostrar contraseña">👁</button>
+                </div>
+              </label>
+              <p class="auth-error" id="passwordError" hidden></p>
+              <button type="submit" class="btn btn--primary">Actualizar contraseña</button>
+              <span class="account-save-msg" id="passwordSaveMsg" hidden>Actualizada ✓</span>
+            </form>
+            <hr class="account-divider" />
+            <button class="btn btn--ghost" id="logoutBtn">Cerrar sesión</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CARRITO -->
+  <aside class="cart-panel" id="cartPanel">
+    <div class="cart-panel__header">
+      <h3>Tu carrito</h3>
+      <button id="cartClose" aria-label="Cerrar carrito">✕</button>
+    </div>
+    <div class="cart-panel__items" id="cartItems">
+      <p class="placeholder">Tu carrito está vacío.</p>
+    </div>
+    <div class="cart-panel__footer">
+      <div class="cart-panel__total">Total: <span id="cartTotal">$0</span></div>
+      <button class="btn btn--primary btn--full" id="checkoutBtn">Finalizar compra</button>
+    </div>
+  </aside>
+  <div class="cart-overlay" id="cartOverlay"></div>
+
+  <footer class="footer">
+    <p>© 2026 Leviatán House. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="https://checkout.epayco.co/checkout-v2.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="data.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="auth.js"></script>
+  <script src="cart.js"></script>
+  <script src="checkout-flow.js"></script>
+  <script src="cuenta.js"></script>
+</body>
+</html>
