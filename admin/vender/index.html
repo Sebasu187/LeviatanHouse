@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nueva venta — Panel POS Leviatán House</title>
+  <link rel="icon" href="/Images/LeviaLogoEstandar-Photoroom.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/admin-pos.css" />
+</head>
+<body>
+  <div class="pos-app">
+    <aside class="pos-sidebar" id="posSidebar"></aside>
+
+    <main class="pos-main">
+      <div class="pos-header">
+        <div>
+          <h1>Nueva venta</h1>
+          <p>Administrador: <strong id="posAdminName">—</strong></p>
+        </div>
+        <div class="pos-header__actions">
+          <a href="/admin/productos/nuevo/index.html" class="btn btn--ghost">+ Crear producto</a>
+          <a href="/admin/ventas/index.html" class="btn btn--ghost">📊 Historial de ventas</a>
+        </div>
+      </div>
+
+      <div class="pos-sale-layout">
+        <!-- CATÁLOGO -->
+        <div>
+          <div class="pos-catalog-search">
+            <span class="pos-catalog-search__icon">🔍</span>
+            <input type="text" id="posSaleSearch" placeholder="Busca o escanea un código de barras" />
+            <button class="pos-catalog-search__scan" title="Escanear código">📷</button>
+          </div>
+          <div id="posSaleCatalog"></div>
+        </div>
+
+        <!-- CARRITO (escritorio) -->
+        <aside class="pos-cart" id="posCartDesktop"></aside>
+      </div>
+    </main>
+  </div>
+
+  <!-- CARRITO MÓVIL -->
+  <button class="pos-cart-drawer-toggle" id="posCartDrawerToggle">
+    <span id="posCartDrawerCount">0 productos</span>
+    <span id="posCartDrawerTotal">$0</span>
+  </button>
+  <div class="pos-cart-drawer" id="posCartDrawer"></div>
+
+  <nav class="pos-mobile-nav" id="posMobileNav"></nav>
+
+  <!-- MODAL: CIERRE DE VENTA -->
+  <div class="pos-modal-overlay" id="paymentModalOverlay">
+    <div class="pos-modal" id="paymentModalContent"></div>
+  </div>
+
+  <!-- MODAL: RECIBO -->
+  <div class="pos-modal-overlay" id="receiptModalOverlay">
+    <div class="pos-modal" id="receiptModalContent"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/data.js"></script>
+  <script src="/supabase-client.js"></script>
+  <script src="/auth.js"></script>
+  <script src="/admin-pos-layout.js"></script>
+  <script src="/admin/vender/vender.js"></script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leviatan House — Tienda de cartas coleccionables</title>
+  <link rel="icon" href="Images/LeviaLogoEstandar-Photoroom.png" type="image/png" />
+ 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar">
+    <a href="#inicio" class="navbar__brand">
+      <span class="navbar__mark">◆</span>
+      <img src="Images/LeviaLogoEstandar-Photoroom.png" alt="Leviatan House Logo" width="75" height="75" />
+      <span class="navbar__name">LEVIATAN HOUSE</span>
+    </a>
+    <nav class="navbar__links">
+      <a href="#inicio">Inicio</a>
+      <a href="catalogo.html">Catálogo</a>
+      <a href="torneos.html">Torneos</a>
+      <a href="#nosotros">Sobre nosotros</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a href="login.html" id="navAuthLink" class="navbar__auth">Iniciar sesión</a>
+    <button class="navbar__cart" id="cartToggle" aria-label="Abrir carrito">
+      🛒 <span class="navbar__cart-count" id="cartCount">0</span>
+    </button>
+    <button class="navbar__toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </header>
+
+  <!-- ===== HERO / INICIO ===== -->
+  <section id="inicio" class="hero">
+    <img src="Images/leviatan-dragon.svg" alt="" aria-hidden="true" class="hero__dragon" />
+    <div class="hero__content">
+      <p class="hero__eyebrow">Nueva colección disponible</p>
+      <h1 class="hero__title">Cada carta<br>cuenta una<br>partida.</h1>
+      <p class="hero__subtitle">Sobres, singles y material de torneo para tu próxima jugada maestra.</p>
+      <a href="catalogo.html" class="btn btn--primary">Ver catálogo</a>
+    </div>
+    <div class="hero__card" aria-hidden="true">
+      <div class="card-stack">
+        <div class="foil-card foil-card--teal foil-card--back">
+          <div class="foil-card__shine"></div>
+          <svg class="foil-card__emblem" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="2" opacity="0.7"/>
+            <path d="M50 26 L58 44 L50 62 L42 44 Z" fill="currentColor" opacity="0.6"/>
+          </svg>
+          <span class="foil-card__rarity">★</span>
+        </div>
+        <div class="foil-card foil-card--crimson foil-card--mid">
+          <div class="foil-card__shine"></div>
+          <svg class="foil-card__emblem" viewBox="0 0 100 100">
+            <path d="M50 20 L76 50 L50 80 L24 50 Z" fill="none" stroke="currentColor" stroke-width="2" opacity="0.7"/>
+            <circle cx="50" cy="50" r="10" fill="currentColor" opacity="0.6"/>
+          </svg>
+          <span class="foil-card__rarity">★★</span>
+        </div>
+        <div class="foil-card foil-card--gold foil-card--front">
+          <div class="foil-card__shine"></div>
+          <svg class="foil-card__emblem" viewBox="0 0 100 100">
+            <path d="M50 18 L61 39 L85 42 L67 58 L72 82 L50 70 L28 82 L33 58 L15 42 L39 39 Z"
+                  fill="none" stroke="currentColor" stroke-width="2" opacity="0.8"/>
+            <circle cx="50" cy="50" r="6" fill="currentColor" opacity="0.7"/>
+          </svg>
+          <span class="foil-card__rarity">★★★</span>
+        </div>
+        <span class="sparkle sparkle--1">✦</span>
+        <span class="sparkle sparkle--2">✦</span>
+        <span class="sparkle sparkle--3">✦</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CATÁLOGO (vista previa) ===== -->
+  <section id="catalogo" class="section">
+    <div class="section__header section__header--row">
+      <div>
+        <p class="section__eyebrow">01 — Colección</p>
+        <h2 class="section__title">Catálogo</h2>
+      </div>
+      <a href="catalogo.html" class="btn btn--ghost">Ver catálogo completo →</a>
+    </div>
+    <div class="catalog-grid" id="catalogGrid"></div>
+  </section>
+
+  <!-- ===== TORNEOS (vista previa) ===== -->
+  <section id="torneos" class="section section--alt">
+    <div class="section__header section__header--row">
+      <div>
+        <p class="section__eyebrow">02 — Competitivo</p>
+        <h2 class="section__title">Torneos</h2>
+      </div>
+      <a href="torneos.html" class="btn btn--ghost">Ver todos los torneos →</a>
+    </div>
+    <div class="tournament-list" id="tournamentList"></div>
+  </section>
+
+  <!-- ===== SOBRE NOSOTROS ===== -->
+  <section id="nosotros" class="section section--about">
+    <div class="section__header">
+      <p class="section__eyebrow">03 — Nuestra historia</p>
+      <h2 class="section__title">Sobre nosotros</h2>
+    </div>
+    <p class="about__text">
+      Leviatán House nació de la pasión por el juego de cartas coleccionables.
+      Somos un espacio para jugadores, coleccionistas y quienes están dando
+      sus primeros pasos en el mundo competitivo.
+    </p>
+  </section>
+
+  <!-- ===== CONTACTO ===== -->
+  <section id="contacto" class="section section--alt">
+    <div class="section__header">
+      <p class="section__eyebrow">04 — Visítanos</p>
+      <h2 class="section__title">Contacto</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="contact-item__icon">📍</span>
+          <div>
+            <div class="contact-item__label">Dirección</div>
+            <div class="contact-item__value">Carrera 68C #25bis-22, Ciudad 2000</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item__icon">🕒</span>
+          <div>
+            <div class="contact-item__label">Horario</div>
+            <div class="contact-item__value">Martes a domingo, 2:00 PM – 8:00 PM</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item__icon">📱</span>
+          <div>
+            <div class="contact-item__label">Teléfono / WhatsApp</div>
+            <a class="contact-item__value contact-item__link" href="https://wa.me/573002200390" target="_blank" rel="noopener">300 220 0390</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item__icon">📷</span>
+          <div>
+            <div class="contact-item__label">Instagram</div>
+            <a class="contact-item__value contact-item__link" href="https://instagram.com/LEVIATANHOUSE" target="_blank" rel="noopener">@LEVIATANHOUSE</a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-map">
+        <iframe
+          src="https://www.google.com/maps?q=Carrera+68C+%2325bis-22,+Ciudad+2000,+Cali&output=embed"
+          width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CARRITO (panel lateral) ===== -->
+  <aside class="cart-panel" id="cartPanel">
+    <div class="cart-panel__header">
+      <h3>Tu carrito</h3>
+      <button id="cartClose" aria-label="Cerrar carrito">✕</button>
+    </div>
+    <div class="cart-panel__items" id="cartItems">
+      <p class="placeholder">Tu carrito está vacío.</p>
+    </div>
+    <div class="cart-panel__footer">
+      <div class="cart-panel__total">Total: <span id="cartTotal">$0</span></div>
+      <button class="btn btn--primary btn--full" id="checkoutBtn">Finalizar compra</button>
+    </div>
+  </aside>
+  <div class="cart-overlay" id="cartOverlay"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <p>© 2026 Leviatán House. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="https://checkout.epayco.co/checkout-v2.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="data.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="auth.js"></script>
+  <script src="wishlist.js"></script>
+  <script src="tournaments-data.js"></script>
+  <script src="cart.js"></script>
+  <script src="product-detail.js"></script>
+  <script src="fees.js"></script>
+  <script src="checkout-flow.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

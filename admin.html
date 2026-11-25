@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de administración — Leviatán House</title>
+  <link rel="icon" href="Images/LeviaLogoEstandar-Photoroom.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="navbar">
+    <a href="index.html#inicio" class="navbar__brand">
+      <span class="navbar__mark">◆</span>
+      <img src="Images/LeviaLogoEstandar-Photoroom.png" alt="Leviatan House Logo" width="75" height="75" />
+      <span class="navbar__name">LEVIATAN HOUSE</span>
+    </a>
+    <nav class="navbar__links">
+      <a href="index.html#inicio">Inicio</a>
+      <a href="cuenta.html">Mi cuenta</a>
+    </nav>
+    <span class="navbar__auth navbar__auth--logged">⚙ Admin</span>
+  </header>
+
+  <section class="admin-page">
+    <p class="section__eyebrow">Panel privado</p>
+    <h1 class="section__title">Administración</h1>
+    <a href="/admin/vender/index.html" class="btn btn--ghost" style="display:inline-block;margin-bottom:20px;">🧾 Ir al punto de venta (POS) — nuevo módulo</a>
+
+    <div id="adminGate" class="placeholder" style="padding: 40px 0;">Verificando acceso...</div>
+
+    <div id="adminContent" hidden>
+      <div class="admin-tabs">
+        <button class="tab-btn active" data-tab="pedidos">Pedidos</button>
+        <button class="tab-btn" data-tab="inventario">Inventario</button>
+      </div>
+
+      <!-- PEDIDOS -->
+      <div id="adminTabPedidos" class="admin-panel">
+        <div id="adminOrdersList" class="orders-list"></div>
+      </div>
+
+      <!-- INVENTARIO -->
+      <div id="adminTabInventario" class="admin-panel" hidden>
+        <div id="adminInventoryList" class="inventory-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2026 Leviatán House. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="data.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="auth.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

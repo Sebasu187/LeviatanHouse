@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gracias por tu compra — Leviatán House</title>
+  <link rel="icon" href="Images/LeviaLogoEstandar-Photoroom.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <section class="thank-you">
+    <img src="Images/LeviaLogoEstandar-Photoroom.png" alt="Leviatán House" width="90" />
+    <h1 class="section__title">¡Gracias por tu compra!</h1>
+    <p id="thankYouMessage" class="thank-you__text">
+      Tu pago está siendo procesado. Te contactaremos para confirmar el envío o la recogida en tienda.
+    </p>
+    <a href="index.html" class="btn btn--primary">Volver al inicio</a>
+  </section>
+
+  <script>
+    // Limpiamos el carrito guardado ya que la compra se completó
+    localStorage.removeItem('leviatan_cart');
+
+    // Mostramos el estado que devuelve ePayco en la URL, si viene
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref_payco');
+    const isManual = params.get('manual') === '1';
+    const invoice = params.get('invoice');
+
+    if (isManual) {
+      document.getElementById('thankYouMessage').textContent =
+        `Tu pedido ${invoice ? '(' + invoice + ') ' : ''}quedó registrado. Te contactaremos pronto para coordinar el pago (transferencia, efectivo o contraentrega) y el envío o la recogida en tienda.`;
+    } else if (ref) {
+      document.getElementById('thankYouMessage').textContent =
+        `Tu pago quedó registrado con la referencia ${ref}. Te contactaremos para confirmar el envío o la recogida en tienda.`;
+    }
+  </script>
+</body>
+</html>
