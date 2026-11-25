@@ -1,53 +1,33 @@
 // =========================================
-// TORNEOS — datos compartidos entre index.html y torneos.html
-// status: "proximo" | "finalizado"
-// Si el torneo ya se jugó, agrega "results" con el top 3.
+// TORNEOS — ahora se leen de Supabase (tabla "tournaments")
+// compartido entre index.html y torneos.html
 // =========================================
 
-const tournaments = [
-  {
-    id: 1,
-    name: 'Copa Génesis',
-    date: '2 de agosto, 2026',
-    location: 'Sede Leviatán House, Cali',
-    status: 'proximo',
-  },
-  {
-    id: 2,
-    name: 'Torneo Relámpago Julio',
-    date: '19 de julio, 2026',
-    location: 'Sede Leviatán House, Cali',
-    status: 'finalizado',
-    results: [
-      { place: '1°', player: 'Camilo R.' },
-      { place: '2°', player: 'Valentina G.' },
-      { place: '3°', player: 'Andrés M.' },
-    ],
-  },
-  {
-    id: 3,
-    name: 'Liga Nocturna — Ronda 3',
-    date: '28 de junio, 2026',
-    location: 'Sede Leviatán House, Cali',
-    status: 'finalizado',
-    results: [
-      { place: '1°', player: 'Daniela P.' },
-      { place: '2°', player: 'Kevin S.' },
-      { place: '3°', player: 'Laura T.' },
-    ],
-  },
-];
+let tournaments = [];
+
+async function loadTournaments() {
+  const { data, error } = await sb.from('tournaments').select('*').order('created_at', { ascending: false });
+  if (error) {
+    console.error('Error cargando torneos:', error);
+    tournaments = [];
+    return tournaments;
+  }
+  tournaments = data;
+  return tournaments;
+}
 
 function tournamentCardHTML(t) {
   const statusLabel = t.status === 'proximo' ? 'Próximo' : 'Finalizado';
   const statusClass = t.status === 'proximo' ? 'status-badge--proximo' : 'status-badge--finalizado';
+  const results = Array.isArray(t.results) ? t.results : [];
 
-  const resultsHTML = t.results ? `
+  const resultsHTML = results.length > 0 ? `
     <div class="tournament-card__results">
       <div class="tournament-card__results-title">Resultados</div>
       <div class="results-podium">
-        ${t.results.map(r => `
+        ${results.map(r => `
           <div class="results-podium__item">
+            ${r.image ? `<img src="${r.image}" alt="" class="results-podium__avatar" />` : ''}
             <span class="results-podium__place">${r.place}</span>
             <span>${r.player}</span>
           </div>

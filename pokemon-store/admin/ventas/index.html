@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Historial de ventas — Panel POS Leviatán House</title>
+  <link rel="icon" href="/Images/LeviaLogoEstandar-Photoroom.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/admin-pos.css" />
+</head>
+<body>
+  <div class="pos-app">
+    <aside class="pos-sidebar" id="posSidebar"></aside>
+
+    <main class="pos-main">
+      <div class="pos-header">
+        <div>
+          <h1>Historial de ventas</h1>
+          <p>Todas las ventas registradas, en línea y presenciales.</p>
+        </div>
+        <div class="pos-header__actions">
+          <a href="/admin/vender/index.html" class="btn btn--primary">+ Nueva venta</a>
+        </div>
+      </div>
+
+      <div class="pos-toolbar">
+        <div class="pos-search">
+          <span class="pos-search__icon">🔍</span>
+          <input type="text" id="salesSearchInput" placeholder="Buscar por número de venta o cliente" />
+        </div>
+        <input type="date" class="pos-select" id="salesDateFrom" />
+        <input type="date" class="pos-select" id="salesDateTo" />
+        <select class="pos-select" id="salesMethodFilter">
+          <option value="todos">Todos los métodos</option>
+          <option value="Efectivo">Efectivo</option>
+          <option value="Tarjeta">Tarjeta</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Nequi">Nequi</option>
+          <option value="Daviplata">Daviplata</option>
+        </select>
+        <select class="pos-select" id="salesAdminFilter">
+          <option value="todos">Todos los administradores</option>
+        </select>
+      </div>
+
+      <div class="pos-table-wrap">
+        <div id="salesTableContainer"></div>
+      </div>
+    </main>
+  </div>
+
+  <nav class="pos-mobile-nav" id="posMobileNav"></nav>
+
+  <!-- MODAL: DETALLE DE VENTA -->
+  <div class="pos-modal-overlay" id="saleDetailOverlay">
+    <div class="pos-modal" id="saleDetailContent"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/data.js"></script>
+  <script src="/supabase-client.js"></script>
+  <script src="/auth.js"></script>
+  <script src="/admin-pos-layout.js"></script>
+  <script src="/admin/ventas/ventas.js"></script>
+</body>
+</html>

@@ -12,7 +12,11 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let products = [];
 
 async function loadProducts() {
-  const { data, error } = await sb.from('products').select('*');
+  // Solo mostramos en la tienda pública los productos que el admin dejó
+  // activados con el interruptor "Mostrar en tienda online" (panel POS).
+  // Si la columna todavía no existe en tu base de datos, Supabase avisará
+  // con un error aquí — en ese caso corre la migración correspondiente.
+  const { data, error } = await sb.from('products').select('*').eq('active_in_store', true);
 
   if (error) {
     console.error('Error cargando productos desde Supabase:', error);
@@ -20,7 +24,6 @@ async function loadProducts() {
     return products;
   }
 
-  // Marcamos como "featured" los primeros 6 si no hay columna featured definida
   products = data;
   return products;
 }

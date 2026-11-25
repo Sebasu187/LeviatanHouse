@@ -24,6 +24,7 @@ async function loadOrders() {
     const statusClass = order.status === 'pagado' ? 'status-badge--proximo' : 'status-badge--finalizado';
     const items = Array.isArray(order.items) ? order.items : [];
     const methodLabel = order.delivery_method === 'recogida' ? 'Recoger en tienda' : 'Envío a domicilio';
+    const paymentLabel = order.payment_method === 'epayco' ? 'Pagado en línea' : 'Pago manual';
 
     return `
       <div class="tournament-card">
@@ -33,7 +34,8 @@ async function loadOrders() {
             <div class="tournament-card__meta">
               <span>${new Date(order.created_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
               <span>${methodLabel}</span>
-              <span>${formatPrice(order.total)}</span>
+              <span>${paymentLabel}</span>
+              <span>${formatPrice(order.total_charged ?? order.total)}</span>
             </div>
           </div>
           <span class="status-badge ${statusClass}">${statusLabel}</span>

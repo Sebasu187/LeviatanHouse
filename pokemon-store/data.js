@@ -14,6 +14,7 @@ const gameLabels = {
   pokemon: 'Pokémon',
   onepiece: 'One Piece',
   riftbound: 'Riftbound',
+  otros: 'Otros',
 };
 
 function formatPrice(value) {

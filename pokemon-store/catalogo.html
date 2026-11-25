@@ -41,12 +41,24 @@
 
   <!-- ===== TABS ===== -->
   <div class="catalog-tabs">
-    <button class="tab-btn active" data-tab="singles">Singles</button>
-    <button class="tab-btn" data-tab="productos">Productos</button>
+    <button class="tab-btn active" data-tab="productos">Productos</button>
+    <button class="tab-btn" data-tab="singles">Singles</button>
+    <button class="tab-btn" data-tab="mesa">Juegos de mesa</button>
   </div>
 
+  <!-- ===== TAB: PRODUCTOS ===== -->
+  <section class="section tab-panel" id="tab-productos">
+    <div class="catalog-filters" id="productosFilters">
+      <button class="filter-btn active" data-game="todos">Todos</button>
+      <button class="filter-btn" data-game="pokemon">Pokémon</button>
+      <button class="filter-btn" data-game="onepiece">One Piece</button>
+      <button class="filter-btn" data-game="riftbound">Riftbound</button>
+    </div>
+    <div class="catalog-grid" id="productosGrid"></div>
+  </section>
+
   <!-- ===== TAB: SINGLES ===== -->
-  <section class="section tab-panel" id="tab-singles">
+  <section class="section tab-panel" id="tab-singles" hidden>
     <div class="catalog-filters" id="singlesFilters">
       <button class="filter-btn active" data-game="todos">Todos</button>
       <button class="filter-btn" data-game="pokemon">Pokémon</button>
@@ -56,15 +68,9 @@
     <div class="catalog-grid" id="singlesGrid"></div>
   </section>
 
-  <!-- ===== TAB: PRODUCTOS ===== -->
-  <section class="section tab-panel" id="tab-productos" hidden>
-    <div class="catalog-filters" id="productosFilters">
-      <button class="filter-btn active" data-game="todos">Todos</button>
-      <button class="filter-btn" data-game="pokemon">Pokémon</button>
-      <button class="filter-btn" data-game="onepiece">One Piece</button>
-      <button class="filter-btn" data-game="riftbound">Riftbound</button>
-    </div>
-    <div class="catalog-grid" id="productosGrid"></div>
+  <!-- ===== TAB: JUEGOS DE MESA ===== -->
+  <section class="section tab-panel" id="tab-mesa" hidden>
+    <div class="catalog-grid" id="mesaGrid"></div>
   </section>
 
   <!-- ===== CARRITO (panel lateral) ===== -->
@@ -95,6 +101,8 @@
   <script src="auth.js"></script>
   <script src="wishlist.js"></script>
   <script src="cart.js"></script>
+  <script src="product-detail.js"></script>
+  <script src="fees.js"></script>
   <script src="checkout-flow.js"></script>
   <script src="catalogo.js"></script>
 </body>

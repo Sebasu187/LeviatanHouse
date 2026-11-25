@@ -56,6 +56,23 @@ async function loadAdminOrders() {
         <p>📱 ${order.customer_phone || '—'}</p>
       `;
 
+    const paymentLabel = order.payment_method === 'epayco' ? 'ePayco (en línea)' : 'Manual (transferencia/efectivo/contraentrega)';
+    const breakdown = `
+      <div class="admin-order-card__breakdown">
+        <span>Subtotal: ${formatPrice(order.subtotal ?? order.total)}</span>
+        ${order.epayco_fee ? `<span>Comisión ePayco: ${formatPrice(order.epayco_fee)}</span>` : ''}
+        <span>Total cobrado: <strong>${formatPrice(order.total_charged ?? order.total)}</strong></span>
+        <span>Neto esperado: ${formatPrice(order.net_expected ?? order.total)}</span>
+        <span>Método: ${paymentLabel}</span>
+      </div>
+    `;
+
+    // Los pedidos manuales pendientes necesitan que el admin confirme el
+    // pago a mano (transferencia/efectivo) — ahí es cuando se descuenta el stock
+    const markPaidButton = (order.payment_method === 'manual' && order.status !== 'pagado')
+      ? `<button class="btn btn--primary mark-paid-btn" data-id="${order.id}">✓ Marcar como pagado y descontar stock</button>`
+      : '';
+
     return `
       <div class="tournament-card admin-order-card">
         <div class="tournament-card__top">
@@ -64,21 +81,60 @@ async function loadAdminOrders() {
             <div class="tournament-card__meta">
               <span>${new Date(order.created_at).toLocaleString('es-CO')}</span>
               <span>${methodLabel}</span>
-              <span>${formatPrice(order.total)}</span>
+              <span>${formatPrice(order.total_charged ?? order.total)}</span>
             </div>
           </div>
           <span class="status-badge ${statusClass}">${statusLabel}</span>
         </div>
         <div class="admin-order-card__customer">${customerInfo}</div>
+        ${breakdown}
         <div class="tournament-card__results">
           <div class="tournament-card__results-title">${items.length} producto(s)</div>
           <div class="results-podium">
             ${items.map(i => `<div class="results-podium__item"><span>${i.qty}x</span> producto #${i.id}</div>`).join('')}
           </div>
         </div>
+        ${markPaidButton}
       </div>
     `;
   }).join('');
+
+  list.querySelectorAll('.mark-paid-btn').forEach(btn => {
+    btn.addEventListener('click', () => markOrderAsPaid(Number(btn.dataset.id), btn));
+  });
+}
+
+// Confirma un pedido de pago manual: lo marca como pagado y descuenta el
+// stock de cada producto — solo una vez (protegido con el filtro de estado
+// 'pendiente' para que dos clicks seguidos no descuenten doble).
+async function markOrderAsPaid(orderId, btn) {
+  btn.disabled = true;
+  btn.textContent = 'Procesando...';
+
+  const { data: updated, error } = await sb
+    .from('orders')
+    .update({ status: 'pagado' })
+    .eq('id', orderId)
+    .eq('status', 'pendiente')
+    .select()
+    .single();
+
+  if (error || !updated) {
+    alert('Este pedido ya fue marcado como pagado, o no se pudo actualizar.');
+    loadAdminOrders();
+    return;
+  }
+
+  const items = Array.isArray(updated.items) ? updated.items : [];
+  for (const item of items) {
+    const { data: product } = await sb.from('products').select('stock').eq('id', item.id).single();
+    if (product) {
+      const newStock = Math.max(0, product.stock - item.qty);
+      await sb.from('products').update({ stock: newStock }).eq('id', item.id);
+    }
+  }
+
+  loadAdminOrders();
 }
 
 // ---- INVENTARIO ----

@@ -48,7 +48,7 @@ const productosGrid = document.getElementById('productosGrid');
 const productosFilters = document.querySelectorAll('#productosFilters .filter-btn');
 
 function renderProductos(game = 'todos') {
-  const list = products.filter(p => p.category !== 'single' && (game === 'todos' || p.game === game));
+  const list = products.filter(p => p.category !== 'single' && p.category !== 'juego_mesa' && (game === 'todos' || p.game === game));
   productosGrid.innerHTML = list.map(productCardHTML).join('') || '<p class="placeholder">No hay productos en esta categoría todavía.</p>';
 }
 
@@ -60,11 +60,20 @@ productosFilters.forEach(btn => {
   });
 });
 
+// ---- JUEGOS DE MESA ----
+const mesaGrid = document.getElementById('mesaGrid');
+
+function renderMesa() {
+  const list = products.filter(p => p.category === 'juego_mesa');
+  mesaGrid.innerHTML = list.map(productCardHTML).join('') || '<p class="placeholder">No hay juegos de mesa todavía.</p>';
+}
+
 // ---- TABS ----
 const tabButtons = document.querySelectorAll('.tab-btn');
 const tabPanels = {
-  singles: document.getElementById('tab-singles'),
   productos: document.getElementById('tab-productos'),
+  singles: document.getElementById('tab-singles'),
+  mesa: document.getElementById('tab-mesa'),
 };
 
 tabButtons.forEach(btn => {
@@ -77,8 +86,8 @@ tabButtons.forEach(btn => {
   });
 });
 
-// ---- Delegación de eventos "Agregar" para ambas grillas ----
-[singlesGrid, productosGrid].forEach(grid => {
+// ---- Delegación de eventos "Agregar" para las 3 grillas ----
+[singlesGrid, productosGrid, mesaGrid].forEach(grid => {
   grid.addEventListener('click', (e) => {
     if (e.target.classList.contains('btn--add')) {
       const id = Number(e.target.dataset.id);
@@ -91,5 +100,6 @@ tabButtons.forEach(btn => {
 loadProducts().then(() => {
   renderSingles();
   renderProductos();
+  renderMesa();
   refreshWishlistHearts();
 });

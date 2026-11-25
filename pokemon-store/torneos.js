@@ -16,8 +16,10 @@ function renderFinalizados() {
   finalizadosList.innerHTML = list.map(tournamentCardHTML).join('') || '<p class="placeholder">Todavía no hay torneos finalizados.</p>';
 }
 
-renderProximos();
-renderFinalizados();
+loadTournaments().then(() => {
+  renderProximos();
+  renderFinalizados();
+});
 
 // ---- TABS ----
 const tabButtons = document.querySelectorAll('.tab-btn');

@@ -53,4 +53,4 @@ function renderTournaments() {
   tournamentListEl.innerHTML = tournaments.map(tournamentCardHTML).join('');
 }
 
-renderTournaments();
+loadTournaments().then(renderTournaments);

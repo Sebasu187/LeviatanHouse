@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crear producto — Panel POS Leviatán House</title>
+  <link rel="icon" href="/Images/LeviaLogoEstandar-Photoroom.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/admin-pos.css" />
+</head>
+<body>
+  <div class="pos-app">
+    <aside class="pos-sidebar" id="posSidebar"></aside>
+
+    <main class="pos-main">
+      <div class="pos-header">
+        <div>
+          <p class="section__eyebrow" style="margin-bottom:6px;"><a href="/admin/productos/index.html" style="color:inherit;">← Productos e inventario</a></p>
+          <h1 id="pageTitle">Crear producto</h1>
+          <p>Los campos marcados con <span style="color:var(--crimson)">*</span> son obligatorios.</p>
+        </div>
+      </div>
+
+      <form id="newProductForm" class="pos-form-layout">
+        <!-- COLUMNA PRINCIPAL -->
+        <div>
+          <div class="pos-form-card">
+            <h3>Imágenes del producto</h3>
+            <div class="pos-image-uploader" id="imageUploader">
+              <label class="pos-image-slot" data-slot="0">
+                <span>📷</span>
+                <span>Agregar imagen</span>
+                <input type="file" accept="image/*" hidden />
+              </label>
+              <label class="pos-image-slot" data-slot="1">
+                <span>📷</span>
+                <span>Agregar imagen</span>
+                <input type="file" accept="image/*" hidden />
+              </label>
+              <label class="pos-image-slot" data-slot="2">
+                <span>📷</span>
+                <span>Agregar imagen</span>
+                <input type="file" accept="image/*" hidden />
+              </label>
+            </div>
+            <p class="pos-field__hint">Hasta 3 imágenes. Si no subes ninguna, se usa una imagen genérica.</p>
+          </div>
+
+          <div class="pos-form-card">
+            <h3>Información básica</h3>
+
+            <div class="pos-field">
+              <label>Código de barras</label>
+              <div class="pos-barcode-field">
+                <input type="text" name="barcode" placeholder="Escanea o escribe el código" />
+                <span class="pos-barcode-field__icon">📷</span>
+              </div>
+              <span class="pos-field__hint">Puedes escanear con un lector USB conectado — funciona como si escribieras.</span>
+            </div>
+
+            <div class="pos-field">
+              <label>Nombre del producto <span class="required">*</span></label>
+              <input type="text" name="name" placeholder="Ej. Charizard ex (Holo)" required />
+            </div>
+
+            <div class="pos-field">
+              <label>Descripción</label>
+              <textarea name="description" placeholder="Detalles del producto, edición, estado, etc."></textarea>
+            </div>
+
+            <div class="pos-field-row">
+              <div class="pos-field">
+                <label>Precio de venta (COP) <span class="required">*</span></label>
+                <input type="number" name="price" id="fieldPrice" min="0" step="1" placeholder="0" required />
+              </div>
+              <div class="pos-field">
+                <label>Costo de compra (COP)</label>
+                <input type="number" name="cost" id="fieldCost" min="0" step="1" placeholder="0" />
+              </div>
+            </div>
+
+            <div class="pos-field-row">
+              <div class="pos-field">
+                <label>Unidades disponibles <span class="required">*</span></label>
+                <input type="number" name="stock" min="0" step="1" placeholder="0" required />
+              </div>
+              <div class="pos-field">
+                <label>Stock mínimo</label>
+                <input type="number" name="minStock" min="0" step="1" placeholder="0" />
+                <span class="pos-field__hint">Por debajo de este número, se marca "Stock bajo".</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMNA LATERAL -->
+        <div>
+          <div class="pos-form-card">
+            <h3>Organización</h3>
+
+            <div class="pos-field">
+              <label>Juego <span class="required">*</span></label>
+              <select name="game" required>
+                <option value="">Selecciona un juego</option>
+              </select>
+            </div>
+
+            <div class="pos-field">
+              <label>Tipo de producto <span class="required">*</span></label>
+              <select name="category" required>
+                <option value="sobre">Sobre / paquete</option>
+                <option value="single">Single (carta individual)</option>
+                <option value="accesorio">Accesorio</option>
+                <option value="juego_mesa">Juego de mesa</option>
+              </select>
+            </div>
+
+            <div class="pos-toggle-row">
+              <div>
+                <div class="pos-toggle-row__label">Mostrar en tienda online</div>
+                <div class="pos-toggle-row__hint">Aparece en el catálogo público del sitio</div>
+              </div>
+              <label class="pos-switch">
+                <input type="checkbox" name="activeInStore" checked />
+                <span class="pos-switch__track"></span>
+              </label>
+            </div>
+
+            <div class="pos-toggle-row">
+              <div>
+                <div class="pos-toggle-row__label">Permitir venta presencial</div>
+                <div class="pos-toggle-row__hint">Disponible en el punto de venta (Vender)</div>
+              </div>
+              <label class="pos-switch">
+                <input type="checkbox" name="sellInPerson" checked />
+                <span class="pos-switch__track"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="pos-form-card">
+            <h3>Ganancia estimada</h3>
+            <div class="pos-profit-summary" id="profitSummary">
+              <div class="pos-profit-summary__row"><span>Precio de venta</span><span id="profitPrice">$0</span></div>
+              <div class="pos-profit-summary__row"><span>Costo de compra</span><span id="profitCost">$0</span></div>
+              <div class="pos-profit-summary__row"><span>Ganancia por unidad</span><strong id="profitMargin">$0</strong></div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--full" id="submitBtn">Crear producto</button>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <nav class="pos-mobile-nav" id="posMobileNav"></nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/data.js"></script>
+  <script src="/supabase-client.js"></script>
+  <script src="/auth.js"></script>
+  <script src="/admin-pos-layout.js"></script>
+  <script src="/admin/productos/nuevo/nuevo.js"></script>
+</body>
+</html>

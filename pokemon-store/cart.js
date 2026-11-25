@@ -141,9 +141,6 @@ const checkoutBtn = document.getElementById('checkoutBtn');
 const CREATE_SESSION_URL = 'https://cdthmlxlmlzxntzylflt.supabase.co/functions/v1/epayco-create-session';
 
 async function startCheckout(customer) {
-  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const description = cart.map(item => `${item.qty}x ${item.name}`).join(', ');
-  const invoice = 'LEVIATAN-' + Date.now();
   const itemsForInventory = cart.map(item => ({ id: item.id, qty: item.qty }));
   const responseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'gracias.html';
 
@@ -154,6 +151,9 @@ async function startCheckout(customer) {
   checkoutBtn.textContent = 'Procesando...';
 
   try {
+    // Ojo: NO mandamos precios ni el total desde el navegador — el servidor
+    // los recalcula con los precios reales de la base de datos, así nadie
+    // puede manipular cuánto paga desde las herramientas de desarrollador.
     const res = await fetch(CREATE_SESSION_URL, {
       method: 'POST',
       headers: {
@@ -162,18 +162,29 @@ async function startCheckout(customer) {
         'apikey': SUPABASE_ANON_KEY,
       },
       body: JSON.stringify({
-        amount: total,
-        description: description.slice(0, 200),
-        invoice,
-        extra1: JSON.stringify(itemsForInventory).slice(0, 250),
         responseUrl,
         customer,
         items: itemsForInventory,
         userId: user ? user.id : null,
+        paymentMethod: customer?.paymentMethod || 'epayco',
       }),
     });
 
     const data = await res.json();
+
+    if (data.error) {
+      console.error('No se pudo crear el pedido:', data);
+      alert('No se pudo procesar tu pedido. Intenta de nuevo en un momento.');
+      return;
+    }
+
+    // Pago manual (transferencia / efectivo / contraentrega): no hay pasarela,
+    // el pedido ya quedó registrado — solo confirmamos y limpiamos el carrito.
+    if (data.manual) {
+      localStorage.removeItem(CART_KEY);
+      window.location.href = `gracias.html?manual=1&invoice=${encodeURIComponent(data.invoice)}`;
+      return;
+    }
 
     if (!data.sessionId) {
       console.error('No se pudo crear la sesión:', data);
@@ -184,7 +195,7 @@ async function startCheckout(customer) {
     const checkout = ePayco.checkout.configure({
       sessionId: data.sessionId,
       type: 'onpage',
-      test: true, // ⚠️ modo pruebas — cambiar a false cuando esté listo para cobrar de verdad
+      test: false, // ✅ modo producción — cobros reales
     });
 
     checkout.setHooks({

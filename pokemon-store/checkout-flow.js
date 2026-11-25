@@ -98,6 +98,20 @@ function buildDeliveryModal() {
         <p class="delivery-step__eyebrow">Último paso</p>
         <h3>Verifica tus datos</h3>
         <div id="deliveryReviewContent" class="delivery-review"></div>
+
+        <div class="payment-method-select">
+          <label class="payment-method-option">
+            <input type="radio" name="paymentMethod" value="epayco" checked />
+            <span>💳 Pagar en línea (ePayco)</span>
+          </label>
+          <label class="payment-method-option">
+            <input type="radio" name="paymentMethod" value="manual" />
+            <span>🤝 Transferencia / efectivo / contraentrega</span>
+          </label>
+        </div>
+
+        <div id="priceBreakdown" class="price-breakdown"></div>
+
         <p class="delivery-note">
           Al confirmar, serás dirigido a la pantalla de pago seguro.
         </p>
@@ -169,6 +183,51 @@ function renderDeliveryReview() {
         <div><dt>Dirección</dt><dd>${deliveryData.address}</dd></div>
       </dl>
     `;
+  }
+  renderPriceBreakdown();
+}
+
+// El total mostrado aquí es solo un estimado para que el cliente vea el
+// desglose antes de pagar — el cobro real siempre se recalcula en el
+// servidor con los precios reales de la base de datos (ver checkout-flow.js
+// → startCheckout en cart.js → Edge Function epayco-create-session).
+function renderPriceBreakdown() {
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const shippingCost = 0; // contraentrega — el cliente paga el envío aparte, directo al mensajero
+  const discount = 0;     // listo para cupones a futuro
+  const netAmount = subtotal + shippingCost - discount;
+
+  const selectedInput = deliveryModalEl.querySelector('input[name="paymentMethod"]:checked');
+  const selectedMethod = selectedInput ? selectedInput.value : 'epayco';
+  deliveryData.paymentMethod = selectedMethod;
+
+  let rows = `<div class="price-row"><span>Subtotal</span><span>${formatPrice(subtotal)}</span></div>`;
+
+  if (shippingCost > 0) {
+    rows += `<div class="price-row"><span>Envío</span><span>${formatPrice(shippingCost)}</span></div>`;
+  }
+  if (discount > 0) {
+    rows += `<div class="price-row price-row--discount"><span>Descuento</span><span>-${formatPrice(discount)}</span></div>`;
+  }
+
+  let total = netAmount;
+  let feeNote = '';
+
+  if (selectedMethod === 'epayco') {
+    const gross = calculateEpaycoGrossAmount(netAmount);
+    const fee = calculateEpaycoFee(netAmount, gross);
+    total = gross;
+    rows += `<div class="price-row"><span>Costo de procesamiento de pago</span><span>${formatPrice(fee)}</span></div>`;
+    feeNote = '<p class="delivery-note">El costo de procesamiento aplica únicamente para pagos por ePayco.</p>';
+  }
+
+  rows += `<div class="price-row price-row--total"><span>Total a pagar</span><span>${formatPrice(total)}</span></div>`;
+
+  document.getElementById('priceBreakdown').innerHTML = rows + feeNote;
+
+  const confirmBtn = document.getElementById('deliveryConfirm');
+  if (confirmBtn) {
+    confirmBtn.textContent = selectedMethod === 'epayco' ? 'Confirmar y pagar' : 'Confirmar pedido';
   }
 }
 
@@ -257,6 +316,10 @@ function openDeliveryFlow() {
     document.getElementById('deliveryConfirm').addEventListener('click', () => {
       deliveryModalEl.classList.remove('open');
       startCheckout({ ...deliveryData });
+    });
+
+    deliveryModalEl.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+      radio.addEventListener('change', renderPriceBreakdown);
     });
   }
 

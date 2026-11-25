@@ -26,7 +26,13 @@
     // Mostramos el estado que devuelve ePayco en la URL, si viene
     const params = new URLSearchParams(window.location.search);
     const ref = params.get('ref_payco');
-    if (ref) {
+    const isManual = params.get('manual') === '1';
+    const invoice = params.get('invoice');
+
+    if (isManual) {
+      document.getElementById('thankYouMessage').textContent =
+        `Tu pedido ${invoice ? '(' + invoice + ') ' : ''}quedó registrado. Te contactaremos pronto para coordinar el pago (transferencia, efectivo o contraentrega) y el envío o la recogida en tienda.`;
+    } else if (ref) {
       document.getElementById('thankYouMessage').textContent =
         `Tu pago quedó registrado con la referencia ${ref}. Te contactaremos para confirmar el envío o la recogida en tienda.`;
     }
